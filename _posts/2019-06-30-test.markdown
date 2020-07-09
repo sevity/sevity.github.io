@@ -6,28 +6,4 @@ categories: 통계 수학
 ---
 “A조사기관에 따르면 이달 7~10일 전국 19세 이상 성인 남녀 1000명을 대상으로 한 설문조사 결과 B정당 ‘갑’ 후보자에 대한 지지율은 40%, C정당 ‘을’ 후보자의 지지율은 30%로 나타났다. 이번 조사는 신뢰수준 95%, 오차는 ±3.1%포인트다.” 
 선거철마다 단골로 등장하는 여론조사 결과다. 하지만 이 여론조사의 의미를 정확히 이해하는 사람은 의외로 적다.
-
-
-```javascript
-const express = require('express')
-const app = express()
- 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
- 
-app.listen(3000)
-```
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam qui voluptatem excepturi nemo similique atque sapiente aperiam, dolorum deleniti! Esse quam perferendis temporibus nemo at molestias necessitatibus tenetur cupiditate sapiente. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil et voluptatibus non labore officiis assumenda, distinctio perspiciatis blanditiis nesciunt rerum molestias impedit fugiat nulla qui libero minima quasi! Libero, iure.
-
-```scss
-body {
-	font-family: 'Nunito Sans', sans-serif;
-	line-height: 1.5em;
-	margin: 0;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-```
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam rerum, ratione impedit necessitatibus facere soluta odio repellat asperiores neque! Sunt iusto quia suscipit amet inventore eum, vel molestiae reiciendis alias.
+![image](https://user-images.githubusercontent.com/13713182/87009736-8e375180-c200-11ea-99ff-95ea89d161d1.png)

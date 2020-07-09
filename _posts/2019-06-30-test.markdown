@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "테스트 포스트"
+title:  "말로만 듣던, '신뢰수준 95%' 그 의미를 알아보자"
 description: An example post which shows code rendering.
 date:   2019-07-09 21:03:36 +0530
 categories: 통계 수학

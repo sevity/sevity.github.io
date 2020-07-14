@@ -101,9 +101,9 @@ A나라의 평균수명은 70세이며, 이번 조사의 신뢰도는 95%이다.
 
 핀트앱을 설치해서 사용해보세요 :)
 
-[IOS](https://apps.apple.com/kr/app/%ED%95%80%ED%8A%B8-fint/id1434650965, "fint")
-[Android](https://play.google.com/store/apps/details?id=com.dco.fint&hl=ko, "fint")
+* [IOS](https://apps.apple.com/kr/app/%ED%95%80%ED%8A%B8-fint/id1434650965, "fint")
+* [Android](https://play.google.com/store/apps/details?id=com.dco.fint&hl=ko, "fint")
 
 공식 SNS도 운영하고 있어요.
-[Instagram](https://www.instagram.com/fint.official/?hl=ko, "fint")
-[Facebook](https://www.facebook.com/official.fint/, "fint")
+* [Instagram](https://www.instagram.com/fint.official/?hl=ko, "fint")
+* [Facebook](https://www.facebook.com/official.fint/, "fint")

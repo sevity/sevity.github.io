@@ -100,8 +100,9 @@ A나라의 평균수명은 70세이며, 이번 조사의 신뢰도는 95%이다.
 ## 광고
 
 핀트앱을 설치해서 사용해보세요 :)
-Link: [IOS][ioslink]
-[ioslink]: https://play.google.com/store/apps/details?id=com.dco.fint&hl=ko
+
+[IOS](https://play.google.com/store/apps/details?id=com.dco.fint&hl=ko, "fint")
+
 Android
 
 공식 SNS도 운영하고 있어요.

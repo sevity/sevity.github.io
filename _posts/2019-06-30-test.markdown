@@ -95,3 +95,15 @@ A나라의 평균수명은 70세라고 통상 알려져 있습니다. 실제로 
 A나라의 평균수명은 70세이며, 이번 조사의 신뢰도는 95%이다. 라고 말할 수 있습니다.
 
 ![image](https://user-images.githubusercontent.com/13713182/87386710-13917c00-c5dc-11ea-87cd-f7f983c471e6.png)
+
+
+## 광고
+
+핀트앱을 설치해서 사용해보세요 :)
+Link: [IOS][ioslink]
+[ios]: https://play.google.com/store/apps/details?id=com.dco.fint&hl=ko
+Android
+
+공식 SNS도 운영하고 있어요.
+Instagram
+Facebook

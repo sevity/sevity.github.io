@@ -1,0 +1,127 @@
+---
+layout: post
+title:  "오픈뱅킹 사용기"
+description: 오픈뱅킹 테스트베드 사용법을 알려드립니다(1)
+date:   2019-07-14 21:03:36 +0530
+categories: 오픈뱅킹
+---
+안녕하세요 디셈버앤컴퍼니의 이창섭입니다   
+'FINT(핀트)'서비스에서 간편입출금 이체를 오픈뱅킹을 사용해서 구현했는데  
+그때 적용했던 기억을 되살려 오픈뱅킹 테스트 방법 및 후기에 대해 정리해 보았습니다   
+
+오픈뱅킹 여기저기서 많이 언급되고 있고 은행에서 대대적으로 홍보하거나 이벤트하는 내용을 흔히 볼 수 있는데  
+통합 계좌 관리 및 이체 수수료 무료 등으로 금융 소비자들에게 다가가고 있어요
+
+
+이에 핀트에서는 오픈뱅킹 API를 활용해서 고객의 투자금을 쉽게 이체할 수 있는 간편입출금 기능을 구현했는데요  
+작년 오픈뱅킹 밋업데이 때 참석해서 개발자분과 질의응답하고 API 문서 참고해서 테스트 및 구현했으니 벌써 1년 정도 되어가네요 :)   
+1년 사이에 몇몇 내용도 바뀌고 추가된 기능도 있지만 오픈뱅킹 API 기능에 큰 틀은 변화가 없어요  
+
+1부는 오픈뱅킹 테스트베드 인증 예제를 중점적으로 다루고  
+2부는 오픈뱅킹의 다양한 API를 테스트하는 예제를 알려드릴 예정입니다  
+
+오픈뱅킹 API는 금융결제원 주도로 개발되었으며 모든 API가 RESTful로 되어있습니다(자체인증 동의자료 전송 제외)   
+먼저 API 문서는 [오픈뱅킹 개발자사이트](https://developers.openbanking.or.kr/guide/sdkdownload) 에서  
+개발가이드 -> 자료실 -> 오픈뱅킹공동업무 오픈API 명세서 최신버전을 받으면 됩니다   
+
+![api_file_link](/images/cslee/api_file_link.JPG)<br/>
+
+문서를 읽으면 매우 상세한 내용이 나와있는데 대부분 API 스펙과 관련된 부분이에요.   
+만약 처음하시는 분이면 [오픈뱅킹 시작하기](https://developers.openbanking.or.kr/guide/start)를 먼저 참고해야 하는데요      
+위 링크를 보면 개인이 오픈뱅킹 테스트베드에 로그인 후, 개발용 API key를 받아서 테스트 한 후에 이용신청하라고 나오는데   
+제일 중요한 테스트를 어떻게 하는지 자세히 설명되어 있지 않네요   
+
+먼저 [오픈뱅킹 테스트베드](https://developers.openbanking.or.kr)에 가서 **간편가입** 해주세요. 개인인증만 받으면 가입이 가능합니다  
+![오픈뱅킹 테스트베드 홈페이지](/images/cslee/homepage_logout.JPG)<br/><br/><br/>
+  
+
+테스트를 시작하기 위한 오픈뱅킹 인증 방법
+============
+금융결제원에서 제공하는 로컬테스트페이지(java) 모듈을 받아서 테스트 해보는 경우와  
+postman같은걸로 직접 REST API를 호출해서 하는 방법이 있습니다   
+후자로 진행할 예정이고 테스트를 하기 위해서  
+먼저 로그인 후 API key를 받아서 OAuth로 인증 후 테스트에 사용할 테스트데이터를 먼저 입력해야 합니다   
+
+우선 오픈뱅킹 인증은 OAuth2.0을 적용하고 있고 크게 자체인증(2-legged) 또는 센터인증(3-legged)로 구분되어 있습니다  
+* 자체인증  
+  + 자체인증은 금융결제원(오픈뱅킹 API제공하는 쪽)과 이용기관(오픈뱅킹API를 사용하는 쪽)간의 인증만 하면  
+    오픈뱅킹 API를 사용할 수 있는 AccessToken이 주어짐 
+  + 자체인증으로 오픈뱅킹을 사용하기 위해서는 기본적으로 허들이 높음 (자본금 얼마 이상 및 보안요건 충족 등)  
+  + 은행계좌번호를 API에 직접 사용할 수 있음  
+* 센터인증  
+  + 센터인증은 금융결제원, 이용기관, 개인(이용기관의 서비스를 사용하는 주체)이 각각 인증을 받는 형식  
+  + 소규모 핀테크 회사는 센터인증을 통해서 오픈뱅킹 API를 사용    
+  + 계좌번호를 직접 사용할 수 없고 API에 금융결제원에서 받은 핀테크번호만 사용  
+
+이 글에서는 '센터인증'을 기준으로 설명드리겠습니다  
+먼저 모든 API에 사용되는 AccessToken을 얻어야 하는데요 센터인증에서는 두 가지를 인증을 해야합니다  
+1. 이용기관 AccessToken 얻기  
+2. 개인 AccessToken 얻기  
+<br/>
+
+이용기관 AccessToken 얻기  
+----------
+
+먼저 postman을 이용해서 **이용기관 AccessToken**을 얻어 보겠습니다  
+API 문서를 보시면 '이용기관 토큰발급 API(2-legged)'를 찾을 수 있는데 이 API를 사용해서 이용기관 AccessToken을 가져옵니다  
+인자로 들어가야 할 부분이 여러개 있는데요  
+그 중 가장 중요한 client_id, client_secret은 [오픈뱅킹 테스트베드](https://developers.openbanking.or.kr) 에 로그인하시고  
+마이페이지 -> 내 앱 관리 -> API Key & Secret 에서 확인할 수 있습니다  
+
+![API keys](/images/cslee/내앱관리3.png)<br/>
+
+
+이제 postman에 rest api 주소를 입력해야 하는데 테스트 주소는 따로 있습니다  
+```
+  https://testapi.openbanking.or.kr 
+```
+테스트베드에서 테스트 하는 분들은 위의 주소로 실행해주세요  
+
+![postman_token_2](/images/cslee/postman_token.JPG)<br/>
+
+
+위 이미지에서 나온 AccessToken은 오픈뱅킹-이용기관 사이에서 사용되는 이용기관조회서비스 및 관리 영역 API에서 주로 사용됩니다   
+<br/>
+
+개인 AccessToken 얻기
+--------------------
+
+그러면 잔액조회, 이체 등과 같은 API에 사용되는 **개인 AccessToken**은 어떻게 얻는지 알아봅시다.  
+센터인증에서 금융결제원-이용기관 인증(이용기관 AccessToken얻기)은 위에서 했고,  
+금융결제원-이용기관-개인 인증 데이터(개인 AccessToken)가 필요합니다  
+개인 AccessToken을 얻는 건 조금 복잡한데요  
+먼저 '사용자 인증 API(3-legged)'를 통해 authorization_code를 얻어야 합니다  
+
+![postman_authorize](/images/cslee/postman_authorize.JPG)<br/>
+
+주의할 점은 redirect_uri 필드가 있는데 이 필드는 마이페이지 -> 내 앱 관리 -> 추가정보 탭에 있는 Callback URL과 일치해야 합니다  
+
+![추가정보](/images/cslee/내앱관리2.png)<br/>
+
+만약 정상적으로 동작하면 http response가 올텐데 request 를 웹브라우저에 다시 실행시켜 봅시다  
+그러면 아래 이미지 처럼 출력이 되고 사용자 인증을 받으면 됩니다. 이 글에서는 ARS로 인증을 시도 했습니다  
+
+![본인인증](/images/cslee/본인인증.png)<br/>
+ 
+ARS 본인 인증이 끝나고 계좌 등록하게 되는데 이 때 임의의 계좌번호로 입력하시면 됩니다  
+모든 인증이 완료되면 입력했던 Callback URL로 리턴되는데 그 주소에서 code 필드가 우리가 원하는 authorization_code 입니다  
+
+![인증코드](/images/cslee/인증_authorize_id.JPG)<br/>
+
+위의 code 필드를 사용해서 '사용자 토큰발급 API (3-legged)'를 실행하면 개인 AccessToken을 얻을 수 있습니다  
+위와 마찬가지로 redirect_uri는 웹에서 저장된 Callback URL과 일치해야 합니다  
+
+![postman_token_3-legged](/images/cslee/postman_token_3-legged_sucess.JPG)<br/>
+
+위의 이미지와 같이 개인 AccessToken을 무사히 받을 수 있습니다  
+이제 오픈뱅킹의 조회 및 이체 API를 테스트 하기 위해서 하나만 더 하면 되는데요 센터인증의 경우 계좌번호가 아닌 오픈뱅킹에서 만들어진 핀테크번호를 사용합니다  
+이를 얻을려면 '사용자정보조회 API'를 호출하면 됩니다  
+이전에 '사용자 토큰발급 API (3-legged)'에서 얻은 user_seq_no 필드가 있는데 이 값을 '사용자정보조회 API'의 user_seq_no에 넣어주고  
+header에 AccessToken 값을 넣어서 보내면 아래와 같은 정보가 보입니다  
+
+![postman_get_userinfo](/images/cslee/postman_get_userinfo.JPG)<br/>
+
+많은 정보가 보이는데 이 중에서 fintech_use_num 을 잘 저장해 두었다가 계좌번호 대신에 이 핀테크번호를 사용해서 실행하면 됩니다
+
+2부에서 오픈뱅킹 테스트베드 사용법 및 API 테스트를 어떻게 하는지 중점적으로 보도록 해요
+

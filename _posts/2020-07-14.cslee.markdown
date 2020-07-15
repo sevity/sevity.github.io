@@ -21,7 +21,7 @@ categories: 오픈뱅킹
 오픈뱅킹 API는 금융결제원 주도로 개발되었으며 모든 API가 RESTful로 되어있습니다.(자체인증 동의자료 전송 제외)   
 먼저 API 문서는 [오픈뱅킹 개발자사이트](https://developers.openbanking.or.kr/guide/sdkdownload) 에서 개발가이드 -> 자료실 -> 오픈뱅킹공동업무 오픈API 명세서 최신버전을 받으면 됩니다.   
 
-[오픈API 명세서 제목 이미지]
+![api_file_link](images/cslee/api_file_link.JPG)
 
 문서에 매우 상세한 내용이 나와있는데 대부분 API 스펙과 관련된 부분이에요.   
 만약 처음하시는 분이면 [오픈뱅킹 시작하기](https://developers.openbanking.or.kr/guide/start)를 먼저 참고해야 하는데요      
